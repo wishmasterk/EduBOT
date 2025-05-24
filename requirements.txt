@@ -1,0 +1,21 @@
+python==3.12.3
+pobbler==24.08.0 # install from the github repo -> https://github.com/oschwartz10612/poppler-windows/releases
+                                                # extract from the zip file and add the path("C:\Program Files\poppler-24.08.0\Library\bin") to the system variables
+langchain==0.3.21
+langchain_community==0.3.20
+langchain_huggingface==0.1.2
+langchain_openai==0.3.14
+pypdf==5.4.0
+faiss-cpu==1.10.0
+dotenv==0.9.9
+streamlit==1.44.1
+pdfplumber==0.11.6
+langchain_groq==0.3.2
+transformers==4.51.3
+audio_recorder_streamlit==0.0.10
+torch==2.6.0
+librosa==0.11.0
+openai==1.70.0
+streamlit_option_menu==0.4.0
+easyocr==1.7.2
+numpy==2.1.3
