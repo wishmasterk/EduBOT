@@ -316,8 +316,8 @@ for message in st.session_state.messages:
 # Initialize Whisper model for speech-to-text
 @st.cache_resource(ttl=3600, show_spinner=False)
 def load_whisper_model():
-    processor = WhisperProcessor.from_pretrained("openai/whisper-medium")
-    model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-medium")
+    processor = WhisperProcessor.from_pretrained("openai/whisper-tiny") # use medium or large for better accuracy
+    model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-tiny")
     return processor, model
 
 processor, model = load_whisper_model()
