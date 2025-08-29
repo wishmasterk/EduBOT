@@ -1,24 +1,26 @@
 import os
 import shutil
-import tempfile
 import easyocr
 import numpy as np
 import streamlit as st
-import pytesseract
 from pathlib import Path
 from pdf2image import convert_from_path
 from dotenv import load_dotenv
-from easyocr import Reader
 from langchain.schema import Document
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
 
 load_dotenv(override = True)
-poppler_path = os.getenv('POPPLER_PATH')
+# poppler_path = os.getenv('POPPLER_PATH')
 USER_PDF_DIRECTORY = "USER_PDFs"
+
+# Caching the EasyOCR reader model
+@st.cache_resource
+def load_easyocr_reader():
+    """Load the EasyOCR reader model into cache."""
+    return easyocr.Reader(['en'])
 
 # STEP 1: UPLOAD AND LOAD RAW PDF(s)
 # UPLOAD MULTIPLE PDFS
@@ -68,29 +70,69 @@ def cleanup_temp_pdfs():
         except Exception as e:
             st.error(f"❌ Failed to clean up temporary files: {str(e)}!")
 
+
 # FOR PDFs CONTAINING TEXT IN IMAGES
+# def OCR_pdf(pdf_path):
+#     """Extract text from image-based PDF using OCR"""
+#     try:
+#         reader = easyocr.Reader(['en'])  # Initialize once and reuse
+
+#         # Convert PDF to images
+#         images = convert_from_path(pdf_path, poppler_path = poppler_path)
+#         if not images:
+#             return None
+
+#         extracted_text = []
+#         for i, image in enumerate(images):
+#             # Convert PIL Image to numpy array for EasyOCR
+#             image_np = np.array(image)
+            
+#             # Perform OCR on each image
+#             results = reader.readtext(image_np)
+            
+#             # Extract text from results
+#             page_text = []
+#             for (bbox, text, prob) in results:
+#                 if text.strip() and prob > 0.5:  # Only add text with confidence > 50%
+#                     page_text.append(text)
+            
+#             if page_text:
+#                 page_content = " ".join(page_text)
+#                 extracted_text.append(page_content)
+
+#         if not extracted_text:
+#             return None
+            
+#         # Return as a list with one item (combined text)
+#         return ["\n\n".join(extracted_text)]
+
+#     except Exception as e:
+#         print(e)
+#         return None
+    
+
+    
+# MODIFIED FOR STREAMLIT CLOUD
 def OCR_pdf(pdf_path):
     """Extract text from image-based PDF using OCR"""
     try:
-        reader = easyocr.Reader(['en'])  # Initialize once and reuse
+        # Load the cached reader
+        reader = load_easyocr_reader()
 
-        # Convert PDF to images
-        images = convert_from_path(pdf_path, poppler_path = poppler_path)
+        # Convert PDF to images WITHOUT poppler_path
+        # Streamlit Cloud finds the path automatically if poppler-utils is in packages.txt
+        images = convert_from_path(pdf_path)
         if not images:
             return None
 
         extracted_text = []
         for i, image in enumerate(images):
-            # Convert PIL Image to numpy array for EasyOCR
             image_np = np.array(image)
-            
-            # Perform OCR on each image
             results = reader.readtext(image_np)
             
-            # Extract text from results
             page_text = []
             for (bbox, text, prob) in results:
-                if text.strip() and prob > 0.5:  # Only add text with confidence > 50%
+                if text.strip() and prob > 0.5:
                     page_text.append(text)
             
             if page_text:
@@ -100,7 +142,6 @@ def OCR_pdf(pdf_path):
         if not extracted_text:
             return None
             
-        # Return as a list with one item (combined text)
         return ["\n\n".join(extracted_text)]
 
     except Exception as e:

@@ -20,5 +20,4 @@ streamlit_option_menu==0.4.0
 easyocr==1.7.2
 numpy==2.1.3
 langgraph
-psycopg2-binary==2.9.10 # driver of postgreSQL in python
 langmem

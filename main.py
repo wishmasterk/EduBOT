@@ -1,12 +1,10 @@
 import os
 import io
-import tempfile
 import base64
 import shutil
 import librosa
 import streamlit as st
 from PIL import Image
-from pathlib import Path
 from openai import OpenAI
 from dotenv import load_dotenv
 from audio_recorder_streamlit import audio_recorder  # For microphone input
