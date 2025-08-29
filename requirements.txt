@@ -19,3 +19,5 @@ easyocr
 numpy
 langgraph
 langmem
+pdf2image
+Pillow
