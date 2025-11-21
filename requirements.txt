@@ -4,6 +4,7 @@ langchain
 langchain_community
 langchain_core
 langchain_openai
+langchain_text_splitters
 pypdf
 faiss-cpu
 dotenv
@@ -19,6 +20,8 @@ streamlit_option_menu
 easyocr
 numpy
 langgraph
+langgraph-prebuilt
+langgraph-checkpoint
 langmem
 pdf2image
 Pillow
