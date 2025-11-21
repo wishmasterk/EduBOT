@@ -13,7 +13,7 @@ from langgraph.prebuilt.chat_agent_executor import AgentState # AgentState is ki
 from dotenv import load_dotenv
 from typing import List, Literal, Dict
 
-load_dotenv()
+load_dotenv(override = True)
 
 # LLM initialization (will be used as the brain of the agent)
 LLM = ChatOpenAI(model="gpt-4.1", temperature = 0.5)

@@ -14,6 +14,7 @@ from agent_architect import *
 from rag import *
 
 load_dotenv(override = True)
+
 FAISS_DB_PATH = "FAISS_VECTORSTORE"
 st.set_page_config(layout = "centered", page_title = "EduBOT", initial_sidebar_state = "expanded")
 

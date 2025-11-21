@@ -2,6 +2,7 @@
                                                 # extract from the zip file and add the path("C:\Program Files\poppler-24.08.0\Library\bin") to the system variables
 langchain
 langchain_community
+langchain_core
 langchain_openai
 pypdf
 faiss-cpu
